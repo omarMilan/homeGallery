@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700&display=swap");
+
+@theme {
+  --color-Primary: #b4e9ff;
+  --font-PrimaryFont: "Golos Text", ui-sans-serif, system-ui, sans-serif;
+
+  --breakpoint-sm: 64rem; /* 1024px - Smallest Laptop */
+  --breakpoint-md: 80rem; /* 1280px - Standard Laptop */
+  --breakpoint-lg: 90rem; /* 1440px - Large Laptop */
+  --breakpoint-xl: 120rem; /* 1920px - Full HD Desktop */
+}
+
+html,
+body {
+  @apply m-0 p-0 w-full h-full overflow-hidden;
+}

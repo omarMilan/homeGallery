@@ -23,7 +23,13 @@ Setup Steps:
    VITE_BACKEND_URL=http://<LAPTOP_IP>:3001
    Replace <LAPTOP_IP> with your Linux laptop’s IP (e.g., 192.168.0.15)
 
-3. Build the React frontend:
+3. Before you build, update the backend IP address in your React code:
+   - src/pages/AddPage.jsx
+   - src/pages/ViewPage.jsx
+   - src/pages/DeletePage.jsx
+   Replace `http://localhost:3001` with your Linux laptop's IP (e.g., `http://192.168.0.15:3001`)
+
+4. Build the React frontend:
    npm run build
 
 4. Transfer both folders to your Linux laptop:

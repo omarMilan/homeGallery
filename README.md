@@ -19,10 +19,6 @@ Setup Steps:
 1. On Your Main Dev Computer:
 -----------------------------
 1. Clone this repo or copy project files.
-2. Edit `.env` in your React project root:
-   VITE_BACKEND_URL=http://<LAPTOP_IP>:3001
-   Replace <LAPTOP_IP> with your Linux laptop’s IP (e.g., 192.168.0.15)
-
 3. Before you build, update the backend IP address in your React code:
    - src/pages/AddPage.jsx
    - src/pages/ViewPage.jsx

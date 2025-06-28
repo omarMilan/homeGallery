@@ -17,16 +17,16 @@ export default function HomePage() {
   return (
     <div className="relative w-full h-screen bg-Primary flex items-center justify-center overflow-hidden">
       {/* Content */}
-      <div className="flex-col ">
+      <div className="flex-col flex items-center justify-center">
         <div className="flex flex-row items-center gap-x-[0px] transition-all duration-300 md:gap-x-[60px] lg:gap-x-[80px] xl:gap-x-[100px]">
-          <img src={assistant} className="max-w-[90%] w-[208px]" />
+          <img src={assistant} className="max-w-[90%] ml-10 w-[208px]" />
           <SpeechBubble text="Hello welcome to your gallery" />
         </div>
 
         <div className="flex items-center justify-center mt-[45px] text-[28px] font-normal font-PrimaryFont">
           Gallery
         </div>
-        <div className="items-center justify-center flex mt-[45px] max-sm:flex-col flex-row transition-all duration-300 max gap-x-[5%] gap-y-[20px]">
+        <div className="items-center justify-center flex mt-[45px] max-sm:flex-col flex-row transition-all duration-300 gap-x-[10%] gap-y-[20px]">
           <WebButton name="+ Add" />
           <WebButton name="View" />
           <WebButton name="- Delete" />

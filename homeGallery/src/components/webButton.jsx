@@ -17,6 +17,8 @@ export default function WebButton({ name }) {
         navigate("/ViewPage");
       } else if (name === "- Delete") {
         navigate("/DeletePage");
+      } else if (name === "Back") {
+        navigate("/Home");
       }
     }, 1000);
   };
@@ -26,7 +28,7 @@ export default function WebButton({ name }) {
       <button
         onClick={handleClick}
         disabled={closing}
-        className="z-10 w-[90%] max-w-[185px] h-[84px] rounded-[4px] flex items-center justify-center border-[3px] hover:bg-Primary transition-all duration-300 cursor-pointer border-black font-PrimaryFont font-medium select-none text-[20px] bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,.3)]"
+        className="z-10  w-[150px] sm:w-[180px] md:w-[200px] lg:w-[220px] h-[84px] rounded-[4px] flex items-center justify-center border-[3px] hover:bg-Primary transition-all duration-300 cursor-pointer border-black font-PrimaryFont font-medium select-none text-[20px] bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,.3)]"
       >
         {name}
       </button>

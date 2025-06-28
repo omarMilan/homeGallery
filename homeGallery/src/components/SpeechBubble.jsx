@@ -5,7 +5,7 @@ export default function SpeechBubble({ text, mute = false }) {
 
   useEffect(() => {
     let index = 0;
-    const delay = 70; // in ms
+    const delay = 35; // Faster: 50ms between letters
     setVisibleText("");
 
     const audioCtx = !mute
@@ -23,7 +23,7 @@ export default function SpeechBubble({ text, mute = false }) {
 
       if (audioCtx && /[a-zA-Z]/.test(nextChar)) {
         const pitch = 600 + Math.random() * 300;
-        const duration = 0.06;
+        const duration = 0.05;
         const volume = 0.25;
 
         const oscillator = audioCtx.createOscillator();
@@ -50,12 +50,12 @@ export default function SpeechBubble({ text, mute = false }) {
 
     return () => {
       clearInterval(interval);
-      if (audioCtx) audioCtx.close(); // cleanup
+      if (audioCtx) audioCtx.close();
     };
   }, [text, mute]);
 
   return (
-    <div className="z-10 max-w-[90%] w-[350px] h-[141px] rounded-[4px] border-[3px] border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,.3)] text-center mr-10 px-2 font-PrimaryFont font-semibold flex items-center justify-center">
+    <div className="z-10 max-w-[40%] w-[350px] text-[16px] h-[161px] rounded-[4px] border-[3px] border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,.3)] text-center mr-10 px-2 font-PrimaryFont font-semibold flex items-center justify-center">
       {visibleText}
     </div>
   );

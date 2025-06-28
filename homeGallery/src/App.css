@@ -3,6 +3,8 @@
 
 @theme {
   --color-Primary: #b4e9ff;
+  --color-Add: #bcfebe;
+  --color-Delete: #ffcccc;
   --font-PrimaryFont: "Golos Text", ui-sans-serif, system-ui, sans-serif;
 
   --breakpoint-sm: 64rem; /* 1024px - Smallest Laptop */

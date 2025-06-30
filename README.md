@@ -4,69 +4,70 @@ HomeGallery - Local Family Photo & Video Gallery
 This is a full-stack web app to upload, view, and delete photos/videos on a local network. 
 Perfect for sharing memories with family using an old Linux laptop as the server.
 
-Project Structure:
-------------------
-/backend         → Node.js server (Express, Multer)
-  └── assets/
-      └── content/   ← Uploaded media saved here
-
-/dist            → React frontend (after `npm run build`)
-.env             → Frontend config (backend IP)
-
 Setup Steps:
 ============
 
 1. On Your Main Dev Computer:
 -----------------------------
-1. Clone this repo or copy project files.
-3. Before you build, update the backend IP address in your React code:
-   - src/pages/AddPage.jsx
-   - src/pages/ViewPage.jsx
-   - src/pages/DeletePage.jsx
-   Replace `http://localhost:3001` with your Linux laptop's IP (e.g., `http://192.168.0.15:3001`)
+- Clone this repo:
+  git clone https://github.com/omarMilan/HomeGallery.git
+  cd HomeGallery
 
-4. Build the React frontend:
-   npm run build
+- Before you build, update the backend IP address in your React code:
+  Edit these files and replace the IP with your Linux laptop's IP (e.g., http://192.168.0.15:3001):
+    - src/pages/AddPage.jsx
+    - src/pages/ViewPage.jsx
+    - src/pages/DeletePage.jsx
 
-4. Transfer both folders to your Linux laptop:
-   /backend
-   /dist
-   (Use USB, scp, or file sharing)
+- Build and serve the React frontend locally for development:
+  npx vite --host
 
 2. On the Linux Laptop (Local Server):
 --------------------------------------
-- Install Node.js:
+- Install Node.js and npm:
   sudo apt update
   sudo apt install nodejs npm
 
-- Install backend dependencies:
-  cd backend
+- Clone the repo on the Linux laptop:
+  git clone https://github.com/omarMilan/HomeGallery.git
+
+- Install dependencies (do in the backend folder aswell):
+  npm i
   npm install express multer cors
 
-- Start the backend server:
+3. Running Two Terminals on Linux Laptop:
+-----------------------------------------
+Since you need to run both backend and frontend servers simultaneously, open two terminal windows or tabs.
+
+- **Option 1: Use two terminal windows:**  
+  Simply open two terminal applications side by side.
+
+- **Option 2: Use terminal multiplexers:**  
+  - Install `tmux` or `screen` to manage multiple terminal sessions inside one window.
+  - Example for tmux:
+    sudo apt install tmux
+    tmux
+    # Use Ctrl+b + " to split horizontally or Ctrl+b + % to split vertically.
+    # Navigate splits with Ctrl+b + arrow keys.
+
+- Run backend server in one terminal:
   node server.js
-  → Backend runs at: http://192.168.0.15:3001
 
-3. Serve the Frontend:
-----------------------
-- Install a static server:
-  npm install -g serve
-
-- Serve the React build:
-  serve -s dist -l 5173
-  → Frontend runs at: http://192.168.0.15:5173
+- Run frontend server or static serve in the other:
+  npx vite --host
 
 4. Access From Any Device:
 --------------------------
-Visit http://192.168.0.15:5173 from any device on the same Wi-Fi.
+Visit http://<linux_laptop_ip>:5173 from any device on the same Wi-Fi network.
 
 Features:
+---------
 - View the gallery
 - Upload new photos/videos
 - Delete old ones
 
 Secure & Private:
------------------
+----------------
 - Local-only access (inside Wi-Fi)
 - No cloud/internet required
 

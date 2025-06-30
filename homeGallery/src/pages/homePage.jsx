@@ -20,7 +20,7 @@ export default function HomePage() {
       <div className="flex-col flex items-center justify-center">
         <div className="flex flex-row items-center gap-x-[0px] transition-all duration-300 md:gap-x-[60px] lg:gap-x-[80px] xl:gap-x-[100px]">
           <img src={assistant} className="max-w-[90%] ml-10 w-[208px]" />
-          <SpeechBubble text="Hello welcome to your gallery" />
+          <SpeechBubble text="Welcome to your gallery menu" />
         </div>
 
         <div className="flex items-center justify-center mt-[45px] text-[28px] font-normal font-PrimaryFont">

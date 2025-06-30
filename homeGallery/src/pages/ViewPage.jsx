@@ -8,58 +8,85 @@ import axios from "axios";
 export default function ViewPage() {
   const [opening, setOpening] = useState(true);
   const [gallery, setGallery] = useState([]);
-  const [fullscreenSrc, setFullscreenSrc] = useState(null); // For fullscreen preview
+  const [fullscreenSrc, setFullscreenSrc] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setOpening(false), 1000);
-    axios.get("http://localhost:3001/gallery").then((res) =>
-      setGallery(
-        res.data.sort((a, b) => b.name.localeCompare(a.name)) // reverse order (latest first)
-      )
-    );
+    axios.get("http://localhost:3001/gallery").then((res) => {
+      // Sort by createdAt descending
+      const sorted = res.data.sort((a, b) => {
+        const dateA = new Date(a.createdAt || 0);
+        const dateB = new Date(b.createdAt || 0);
+        return dateB - dateA;
+      });
+      setGallery(sorted);
+    });
     return () => clearTimeout(timer);
   }, []);
+
+  const currentYear = new Date().getFullYear();
+
+  const groupedGallery = gallery.reduce((acc, item) => {
+    const dateStr = item.createdAt;
+    const parsedDate = new Date(dateStr);
+    const yearNum = !isNaN(parsedDate) ? parsedDate.getFullYear() : null;
+    const year =
+      yearNum && yearNum >= 1900 && yearNum <= currentYear
+        ? String(yearNum)
+        : "Unknown";
+
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(item);
+    return acc;
+  }, {});
+
+  const sortedYears = Object.entries(groupedGallery).sort(([a], [b]) =>
+    b.localeCompare(a)
+  );
 
   return (
     <div className="relative w-full h-screen bg-Primary flex flex-col items-center justify-start overflow-y-scroll pt-20 pb-10">
       <div className="flex-col items-center justify-center flex">
         <div className="flex flex-row items-center gap-x-[0px] transition-all duration-300 md:gap-x-[60px] lg:gap-x-[80px] xl:gap-x-[100px]">
           <img src={assistant} className="max-w-[90%] ml-10 w-[208px]" />
-          <SpeechBubble
-            text="Your gallery is right here—take 
-a look at your memories!"
-          />
+          <SpeechBubble text="Take a look at your memories!" />
         </div>
 
         <div className="flex flex-col items-start gap-x-4 mt-10 ml-[30px]">
           <WebButton name="Back" />
 
           <div className="z-10 w-[75vw] mt-10 min-h-[30vh] rounded-[4px] border-[3px] border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,.3)] p-4 overflow-y-auto max-h-[60vh]">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
-              {gallery.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="relative  border-black border-2 rounded-md overflow-hidden cursor-pointer hover:scale-105 transition"
-                  onClick={() =>
-                    setFullscreenSrc(`http://localhost:3001${item.url}`)
-                  }
-                >
-                  {item.url.endsWith(".mp4") ? (
-                    <video
-                      src={`http://localhost:3001${item.url}`}
-                      className="w-full h-full object-cover"
-                      muted
-                    />
-                  ) : (
-                    <img
-                      src={`http://localhost:3001${item.url}`}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
+            {sortedYears.map(([year, items]) => (
+              <div key={year} className="w-full mb-8">
+                <h2 className="text-xl font-bold text-blue-500 mb-4">{year}</h2>
+                <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 gap-6 w-full">
+                  {items.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="relative border-Primary border-2 rounded-md overflow-hidden cursor-pointer hover:scale-105 transition transform"
+                      style={{ aspectRatio: "4 / 3", minWidth: "120px" }}
+                      onClick={() =>
+                        setFullscreenSrc(`http://localhost:3001${item.url}`)
+                      }
+                    >
+                      {item.url.endsWith(".mp4") ? (
+                        <video
+                          src={`http://localhost:3001${item.url}`}
+                          className="w-full h-full object-cover"
+                          muted
+                        />
+                      ) : (
+                        <img
+                          src={`http://localhost:3001${item.url}`}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

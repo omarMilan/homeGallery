@@ -27,7 +27,28 @@ app.post("/upload", upload.array("files"), (req, res) => {
 app.get("/gallery", (req, res) => {
   fs.readdir(uploadPath, (err, files) => {
     if (err) return res.status(500).send("Can't read folder");
-    res.json(files.map((name) => ({ url: `/content/${name}`, name })));
+
+    // For each file, get its stats (async)
+    Promise.all(
+      files.map((name) => {
+        const filePath = path.join(uploadPath, name);
+        return new Promise((resolve, reject) => {
+          fs.stat(filePath, (err, stats) => {
+            if (err) reject(err);
+            else
+              resolve({
+                url: `/content/${name}`,
+                name,
+                // send creation or modification time
+                createdAt: stats.birthtime, // creation time
+                modifiedAt: stats.mtime, // last modified time
+              });
+          });
+        });
+      })
+    )
+      .then((filesWithStats) => res.json(filesWithStats))
+      .catch(() => res.status(500).send("Error reading file stats"));
   });
 });
 

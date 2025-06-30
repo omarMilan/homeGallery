@@ -32,7 +32,7 @@ export default function AddPage() {
       <div className="flex-col items-center justify-center flex">
         <div className="flex flex-row items-center gap-x-[0px] transition-all duration-300 md:gap-x-[60px] lg:gap-x-[80px] xl:gap-x-[100px]">
           <img src={assistant} className="max-w-[90%] ml-10 w-[208px]" />
-          <SpeechBubble text="Tap here to upload new memories—photos or videos, it’s all welcome!" />
+          <SpeechBubble text="Tap here to upload new memories!" />
         </div>
         <div className="flex flex-col items-start gap-x-4 mt-10 ml-[30px]">
           <WebButton name="Back" />

@@ -5,6 +5,8 @@ import assistant from "../assets/catAssistant.png";
 import WebButton from "../components/webButton";
 import axios from "axios";
 
+const backendBaseUrl = "http://192.168.0.27:3001"; // your computer's IP
+
 export default function ViewPage() {
   const [opening, setOpening] = useState(true);
   const [gallery, setGallery] = useState([]);
@@ -12,8 +14,7 @@ export default function ViewPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => setOpening(false), 1000);
-    axios.get("http://localhost:3001/gallery").then((res) => {
-      // Sort by createdAt descending
+    axios.get(`${backendBaseUrl}/gallery`).then((res) => {
       const sorted = res.data.sort((a, b) => {
         const dateA = new Date(a.createdAt || 0);
         const dateB = new Date(b.createdAt || 0);
@@ -23,26 +24,6 @@ export default function ViewPage() {
     });
     return () => clearTimeout(timer);
   }, []);
-
-  const currentYear = new Date().getFullYear();
-
-  const groupedGallery = gallery.reduce((acc, item) => {
-    const dateStr = item.createdAt;
-    const parsedDate = new Date(dateStr);
-    const yearNum = !isNaN(parsedDate) ? parsedDate.getFullYear() : null;
-    const year =
-      yearNum && yearNum >= 1900 && yearNum <= currentYear
-        ? String(yearNum)
-        : "Unknown";
-
-    if (!acc[year]) acc[year] = [];
-    acc[year].push(item);
-    return acc;
-  }, {});
-
-  const sortedYears = Object.entries(groupedGallery).sort(([a], [b]) =>
-    b.localeCompare(a)
-  );
 
   return (
     <div className="relative w-full h-screen bg-Primary flex flex-col items-center justify-start overflow-y-scroll pt-20 pb-10">
@@ -56,37 +37,32 @@ export default function ViewPage() {
           <WebButton name="Back" />
 
           <div className="z-10 w-[75vw] mt-10 min-h-[30vh] rounded-[4px] border-[3px] border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,.3)] p-4 overflow-y-auto max-h-[60vh]">
-            {sortedYears.map(([year, items]) => (
-              <div key={year} className="w-full mb-8">
-                <h2 className="text-xl font-bold text-blue-500 mb-4">{year}</h2>
-                <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 gap-6 w-full">
-                  {items.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="relative border-Primary border-2 rounded-md overflow-hidden cursor-pointer hover:scale-105 transition transform"
-                      style={{ aspectRatio: "4 / 3", minWidth: "120px" }}
-                      onClick={() =>
-                        setFullscreenSrc(`http://localhost:3001${item.url}`)
-                      }
-                    >
-                      {item.url.endsWith(".mp4") ? (
-                        <video
-                          src={`http://localhost:3001${item.url}`}
-                          className="w-full h-full object-cover"
-                          muted
-                        />
-                      ) : (
-                        <img
-                          src={`http://localhost:3001${item.url}`}
-                          alt={item.name}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                  ))}
+            <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 gap-6 w-full">
+              {gallery.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="relative border-Primary border-2 rounded-md overflow-hidden cursor-pointer hover:scale-105 transition transform"
+                  style={{ aspectRatio: "4 / 3", minWidth: "120px" }}
+                  onClick={() =>
+                    setFullscreenSrc(`${backendBaseUrl}${item.url}`)
+                  }
+                >
+                  {item.url.endsWith(".mp4") ? (
+                    <video
+                      src={`${backendBaseUrl}${item.url}`}
+                      className="w-full h-full object-cover"
+                      muted
+                    />
+                  ) : (
+                    <img
+                      src={`${backendBaseUrl}${item.url}`}
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

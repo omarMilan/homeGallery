@@ -5,6 +5,8 @@ import assistant from "../assets/catAssistant.png";
 import WebButton from "../components/webButton";
 import axios from "axios";
 
+const backendBaseUrl = "http://192.168.0.27:3001"; // Replace with your PC's local IP
+
 export default function DeletePage() {
   const [opening, setOpening] = useState(true);
   const [gallery, setGallery] = useState([]);
@@ -16,8 +18,7 @@ export default function DeletePage() {
   }, []);
 
   const loadGallery = () => {
-    axios.get("http://localhost:3001/gallery").then((res) => {
-      // Sort by createdAt descending if available, else by name
+    axios.get(`${backendBaseUrl}/gallery`).then((res) => {
       const sorted = res.data.sort((a, b) => {
         const dateA = new Date(a.createdAt || 0);
         const dateB = new Date(b.createdAt || 0);
@@ -34,7 +35,7 @@ export default function DeletePage() {
     const confirmDelete = window.confirm(`Delete "${filename}"?`);
     if (!confirmDelete) return;
     try {
-      await axios.delete(`http://localhost:3001/delete/${filename}`);
+      await axios.delete(`${backendBaseUrl}/delete/${filename}`);
       loadGallery();
     } catch {
       alert("Failed to delete.");
@@ -87,13 +88,13 @@ export default function DeletePage() {
                     >
                       {item.url.endsWith(".mp4") ? (
                         <video
-                          src={`http://localhost:3001${item.url}`}
+                          src={`${backendBaseUrl}${item.url}`}
                           className="w-full h-full object-cover"
                           muted
                         />
                       ) : (
                         <img
-                          src={`http://localhost:3001${item.url}`}
+                          src={`${backendBaseUrl}${item.url}`}
                           alt={item.name}
                           className="w-full h-full object-cover"
                         />

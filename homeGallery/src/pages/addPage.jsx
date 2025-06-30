@@ -20,7 +20,7 @@ export default function AddPage() {
     const formData = new FormData();
     selectedFiles.forEach((file) => formData.append("files", file));
     try {
-      await axios.post("http://localhost:3001/upload", formData);
+      await axios.post("http://192.168.0.27:3001/upload", formData); // your computer's IP
       alert("Upload successful!");
     } catch (err) {
       alert("Upload failed.");
